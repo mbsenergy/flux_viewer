@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "PostgreSQL Table Viewer\nThis site displays tables available in your PostgreSQL database using R and DBI.\nUse the navigation bar to view the table list."
+  },
+  {
+    "objectID": "db_tables.html",
+    "href": "db_tables.html",
+    "title": "Database Tables",
+    "section": "",
+    "text": "# Load packages\nlibrary(DBI)\nlibrary(data.table)\nlibrary(cheetahR)\n\n# Connect to PostgreSQL\ncon = DBI::dbConnect(\n  RPostgres::Postgres(),\n  host = Sys.getenv('PG_FLUX_HOST'),\n  port = Sys.getenv('PG_FLUX_PORT'),\n  dbname = Sys.getenv('PG_FLUX_DBNAME'),\n  user = Sys.getenv('PG_FLUX_USER'),\n  password = Sys.getenv('PG_FLUX_PSW'),\n  sslmode = \"require\"\n)\n\n# Fetch table list\ntables = DBI::dbGetQuery(con, \"\n  SELECT table_schema, table_name\n  FROM information_schema.tables\n  WHERE table_type = 'BASE TABLE'\n    AND table_schema NOT IN ('pg_catalog', 'information_schema')\n  ORDER BY table_schema, table_name\n\")\n\n# Display table\ndatatable = data.table(tables)\ncheetah(datatable)"
+  }
+]
