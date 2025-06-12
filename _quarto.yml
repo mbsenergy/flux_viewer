@@ -1,0 +1,18 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "FLUX Tables Viewer"
+  navbar:
+    left:
+      - text: Home
+        href: index.qmd
+      - text: Tables
+        href: db_tables.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true

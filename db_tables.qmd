@@ -1,0 +1,39 @@
+---
+title: "Database Tables"
+format: html
+execute:
+  echo: true
+  message: false
+  warning: false
+---
+
+```{r}
+# Load packages
+library(DBI)
+library(data.table)
+library(cheetahR)
+
+# Connect to PostgreSQL
+con = DBI::dbConnect(
+  RPostgres::Postgres(),
+  host = Sys.getenv('PG_FLUX_HOST'),
+  port = Sys.getenv('PG_FLUX_PORT'),
+  dbname = Sys.getenv('PG_FLUX_DBNAME'),
+  user = Sys.getenv('PG_FLUX_USER'),
+  password = Sys.getenv('PG_FLUX_PSW'),
+  sslmode = "require"
+)
+
+# Fetch table list
+tables = DBI::dbGetQuery(con, "
+  SELECT table_schema, table_name
+  FROM information_schema.tables
+  WHERE table_type = 'BASE TABLE'
+    AND table_schema NOT IN ('pg_catalog', 'information_schema')
+  ORDER BY table_schema, table_name
+")
+
+# Display table
+datatable = data.table(tables)
+cheetah(datatable)
+```

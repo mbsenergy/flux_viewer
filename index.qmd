@@ -1,0 +1,10 @@
+---
+title: "Welcome"
+format: html
+---
+
+# PostgreSQL Table Viewer
+
+This site displays tables available in your PostgreSQL database using R and `DBI`.
+
+Use the navigation bar to view the table list.
